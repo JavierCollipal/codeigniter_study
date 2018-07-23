@@ -1,6 +1,4 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
-?><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
@@ -145,29 +143,92 @@ input[type=submit]:hover {
 </head>
 <body>
 <div id="container">
-	<h1><?php
-	if(isset($errores)){
-      echo $errores;
-	}?></h1>
+	<h1>
+
+	</h1>
 </div>
 <div id="container">
 	<h1>Bienvenido a nuestro ambiente de CRUD!</h1>
     <h1>Estos son todos los posteos actualmente en el blog</h1>
 	<div id="body">
-<?php 
-	if(isset($posteos)){
-		echo $posteos;
-	}?> 	</div>
+<div id="cuerpo_operaciones" class="col-sm-8 text-left"> 
+     
+       <div v-if="cargando_tabla"> Cargando lista de tareas… </div>
+<table v-if="!cargando_tabla">
+   <h1>{{hola}}</h1>
+    <thead>
+        <tr>
+        <th>ID Post</th>
+        <th>Titulo Post</th>
+        <th>Descripcion Post</th>
+        <th>Contenido Post</th>
+        <th>Fecha Post</th>
+        <th>Botones</th>
+        <tr>
+        </tr>
+    </thead>
+    <!--thread y tbody solo cumplen como ''tag'' y son parte de html--> 
+    <tbody>
+    <!--empezamos la parte interesante de vue rellenando nuestra tabla que selecciona toda la table desde sql sin usar php-->
+    <!--empezamos por la base, v-for de vue directamente remplaza a foreach de php y :key es un indicativo de donde esta cada item al momento de realizar cambio, ahorrandose reusar y volver a ordenar los elementos actuales.-->
+      <tr v-for="load in tablas">
+         <td>{{ load.ID_POST}}</td>
+         <td>{{ load.TITULO_POST}}</td>
+         <td>{{ load.DESCRIPCION_POST}}</td>
+         <td>{{ load.CONTENIDO_POST }}</td>
+         <td>{{ load.FECHA_POST }}</td>
+         <td>
+             <!--Ocupamos los mimis trigger de js pero en este caso v- nos facilitara mucho mas las cosas
+                llamando al trigger correpondiente v-on y luego al metodo-->
+         <button v-on:click="Eliminar_Posteo(load)">Eliminar</button>
+         </td>
+       </tr> 
+     
+    </tbody>
+    </table>
+    
+    
+	
 
-</div>
 	<h1>Si deseas insertar nuevos registros!</h1>
-     <?php 
-	if(isset($insertar)){
-		echo $insertar;
-	}?>  
-		<?php 
-	if(isset($validacion)){
-		echo $validacion;
-	}?>
+     <h2>Insertar Posts</h2>
+     <!--con .prevent estamos evitando que la funcio nos recarge la pagina-->
+<form v-on:submit.prevent="NuevaTabla" method="post">
+     <h1>{{hola}}</h1>
+<div class="row">
+      <div class="col-25">
+        <label for="titulo">Titulo</label>
+      </div>
+      <div class="col-75">
+        <input type="text" v-model="tabla_nueva.TITULO_POST"   placeholder="Escribe el titulo de tupost..">
+         </div>
+    </div>
+    <div class="row">
+      <div class="col-25">
+        <label for="lname">Descripcion</label>
+      </div>
+      <div class="col-75">
+      <textarea   v-model="tabla_nueva.DESCRIPCION_POST" placeholder="Describe el post.." style="height:200px"></textarea>  </div>
+
+    </div>
+    <div class="row">
+      <div class="col-25">
+        <label for="country">Contenido</label>
+      </div>
+     <div class="col-75">
+       <textarea   v-model="tabla_nueva.CONTENIDO_POST" placeholder="Redacta el post.." style="height:200px"></textarea> </div>
+    
+    </div>
+    <div class="row">
+    <button type="submit">Crear</button>
+    </div>
+</form>
+</div>
+</div>
+</div>
+    <script type="text/javascript" src="<?php echo base_url() ?>assets/js/vue.js"></script>
+	<script type="text/javascript" src="<?php echo base_url() ?>assets/js/vue-resource.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script type="text/javascript" src="<?php echo base_url() ?>assets/js/vue-crud.js"></script>
 </body>
 </html>

@@ -58,3 +58,9 @@ $route['traeme-la-bienvenida'] ="welcome/index";
 $route['traeme-el-saludo'] = "saludo/index";
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+
+//es tiempo que nuestro vue y controlador de codeigniter se entiendan entre si
+//al momento de vue solicitar rutas con http, en esta configuracion crearemos una ruta customizada que hace referencia al metodo del controlador, este metodo devuelve un array en json_encode que es la respuesta que busca vue en este caso
+$route['tabla_entera']['get'] ="Crud_ajax/tabla_entera";
+$route['crear_tabla']['post'] ="Crud_ajax/insertar_tabla";
+$route['borrar_posteo']['post'] ="Crud_ajax/borrar_posteo";
